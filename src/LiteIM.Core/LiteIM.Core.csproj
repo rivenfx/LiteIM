@@ -1,8 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\..\common.props" />
+  <Import Project="..\..\version.props" />
+  <Import Project="..\..\repository_info.props" />
+
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>LiteIM</RootNamespace>
+
+
+    <PackageId>Riven.LiteIM.Core</PackageId>
+    <Description>Riven.LiteIM.Core</Description>
+    <AssemblyName>Riven.LiteIM.Core</AssemblyName>
+
+    <PackageTags>riven;im;</PackageTags>
+
   </PropertyGroup>
 
   <ItemGroup>
