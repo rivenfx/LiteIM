@@ -14,9 +14,9 @@ namespace LiteIM
         protected readonly string _prefix;
         protected readonly CSRedisClient _redis;
 
-        protected readonly CsRedisCoreImClientOptions _options;
+        protected readonly ICsRedisCoreImClientOptions _options;
 
-        public CsRedisCoreImClient(CsRedisCoreImClientOptions options)
+        public CsRedisCoreImClient(ICsRedisCoreImClientOptions options)
         {
             _options = options;
 
