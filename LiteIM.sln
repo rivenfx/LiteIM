@@ -9,6 +9,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiteIM.Core", "src\LiteIM.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiteIM.CSRedisCore", "src\LiteIM.CSRedisCore\LiteIM.CSRedisCore.csproj", "{053F8E7C-F7BC-4AC5-A6D0-20FBB1305C0A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F8614B68-4A41-4F4B-B820-6ED675837E2B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{17810CB1-B795-4842-8FE1-13BA00EDA5D2}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWebApp", "tests\SampleWebApp\SampleWebApp.csproj", "{1C293584-7671-4166-8944-FB56AA61003B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +33,10 @@ Global
 		{053F8E7C-F7BC-4AC5-A6D0-20FBB1305C0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{053F8E7C-F7BC-4AC5-A6D0-20FBB1305C0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{053F8E7C-F7BC-4AC5-A6D0-20FBB1305C0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C293584-7671-4166-8944-FB56AA61003B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C293584-7671-4166-8944-FB56AA61003B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C293584-7671-4166-8944-FB56AA61003B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C293584-7671-4166-8944-FB56AA61003B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -30,6 +44,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{DFA184B5-34EC-46C7-9DB4-DCE690AABECC} = {014D3084-B29E-4BFF-BCCD-7EF3C03D17EE}
 		{053F8E7C-F7BC-4AC5-A6D0-20FBB1305C0A} = {014D3084-B29E-4BFF-BCCD-7EF3C03D17EE}
+		{1C293584-7671-4166-8944-FB56AA61003B} = {F8614B68-4A41-4F4B-B820-6ED675837E2B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A0EC0D4A-AA00-4443-A867-4997E35A50CB}
