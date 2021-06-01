@@ -1,11 +1,13 @@
-using Microsoft.Extensions.DependencyInjection;
+using LiteIM;
+
+
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace LiteIM
+namespace Microsoft.Extensions.DependencyInjection
 {
     public static class LiteIMServicesExtenstions
     {
@@ -18,8 +20,8 @@ namespace LiteIM
         /// <param name="options">client 配置</param>
         /// <returns></returns>
         public static IServiceCollection AddLiteIMCore<TImClient, TImClientOptions>(this IServiceCollection services, TImClientOptions options)
-            where TImClient : class, IImClient, new()
-            where TImClientOptions : class, IImClientOptions, new()
+            where TImClient : class, IImClient
+            where TImClientOptions : class, IImClientOptions
         {
             services.AddLiteIMCore<TImClient, TImClientOptions>((s) =>
             {
@@ -37,8 +39,8 @@ namespace LiteIM
         /// <param name="optionConfig">client 配置获取函数</param>
         /// <returns></returns>
         public static IServiceCollection AddLiteIMCore<TImClient, TImClientOptions>(this IServiceCollection services, Func<IServiceProvider, TImClientOptions> optionConfig)
-           where TImClient : class, IImClient, new()
-           where TImClientOptions : class, IImClientOptions, new()
+           where TImClient : class, IImClient
+           where TImClientOptions : class, IImClientOptions
         {
             services.TryAddSingleton<IImClientOptions>(optionConfig);
             services.TryAddSingleton<IImClient, TImClient>();
