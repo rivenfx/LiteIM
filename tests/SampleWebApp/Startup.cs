@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LiteIM;
 
 namespace SampleWebApp
 {
@@ -28,6 +29,17 @@ namespace SampleWebApp
             services.AddControllersWithViews();
 
             services.AddSignalR();
+
+
+            // 添加 im rediscore 的服务
+            var options = new CsRedisCoreImClientOptions()
+            {
+                Redis = new CSRedis.CSRedisClient("")
+            };
+            services.AddLiteIMCsRedisCore((s) =>
+            {
+                return options;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

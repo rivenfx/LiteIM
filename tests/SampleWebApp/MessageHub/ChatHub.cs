@@ -13,6 +13,11 @@ namespace SampleWebApp.MessageHub
     {
         readonly IImClient _imClient;
 
+        public ChatHub(IImClient imClient)
+        {
+            _imClient = imClient;
+        }
+
         /// <summary>
         /// 连接成功
         /// </summary>
@@ -52,8 +57,11 @@ namespace SampleWebApp.MessageHub
 
         public async Task SendData(string chan)
         {
-            var clientList = _imClient.GetChanClientList(chan);
-            await Clients.Clients(clientList.ToList()).SendAsync("", "");
+            var clientList = _imClient.GetChanClientList(chan)
+                .Where(o => o != this.Context.ConnectionId);
+
+            await Clients.Clients(clientList.ToList())
+                .SendAsync("", "");
         }
 
         public async Task SendMessage(string user, string message)
