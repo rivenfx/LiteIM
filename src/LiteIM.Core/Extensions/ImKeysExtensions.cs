@@ -8,27 +8,29 @@ namespace LiteIM.Extensions
     {
         public static string Chan(this string prefix, string end)
         {
-            return $"{prefix}{ImConsts.Chan}{end}";
+            return $"n:{prefix}LiteIM,c:{ImConsts.Chan}{end}";
         }
 
         public static string Client(this string prefix, string end)
         {
-            return $"{prefix}{ImConsts.Client}{end}";
+            return $"n:{prefix}LiteIM,c:{ImConsts.Client}{end}";
         }
 
         public static string ListChan(this string prefix)
         {
-            return $"{prefix}{ImConsts.ListChan}";
+            return $"n:{prefix}LiteIM,c:{ImConsts.ListChan}";
         }
 
         public static string Online(this string prefix)
         {
-            return $"{prefix}{ImConsts.Online}";
+            return $"n:{prefix}LiteIM,c:{ImConsts.Online}";
         }
 
         public static string Offline(this string prefix)
         {
-            return $"{prefix}{ImConsts.Offline}";
+            return $"n:{prefix}LiteIM,c:{ImConsts.Offline}";
         }
     }
+
+
 }
