@@ -10,7 +10,7 @@ Please note: once the use of the open source projects as well as the reference f
 
 ## Build Status
 
-[![Build Status](https://dev.azure.com/rivenfx/RivenFx/_apis/build/status/rivenfx.LiteIM?branchName=master)](https://dev.azure.com/rivenfx/RivenFx/_build/latest?definitionId=8&branchName=master)
+[![Build Status](https://dev.azure.com/rivenfx/RivenFx/_apis/build/status/rivenfx.LiteIM?branchName=master)](https://dev.azure.com/rivenfx/RivenFx/_build/latest?definitionId=9&branchName=master)
 
 ## Nuget Packages
 
