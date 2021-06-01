@@ -9,7 +9,7 @@ using LiteIM.Extensions;
 
 namespace LiteIM
 {
-    public abstract class CsRedisCoreImClient : IImClient
+    public class CsRedisCoreImClient : IImClient
     {
         protected readonly string _prefix;
         protected readonly CSRedisClient _redis;
@@ -24,7 +24,6 @@ namespace LiteIM
             _redis = _options.Redis;
         }
 
-        public abstract void SendMessage(string senderClientId, IEnumerable<string> receiveClientId, object message, bool receipt = false);
 
         public virtual IEnumerable<string> GetClientListByOnline()
         {
@@ -89,6 +88,15 @@ namespace LiteIM
             }
         }
 
+
+        public virtual void LeaveChan(string clientId)
+        {
+            // 所有的聊天室
+            var chans = this.GetChanListByClientId(clientId);
+            // 离开所有聊天室
+            this.LeaveChan(clientId, chans.ToArray());
+        }
+
         public virtual IEnumerable<string> GetChanClientList(string chan)
         {
             return _redis.HKeys(
@@ -126,16 +134,6 @@ namespace LiteIM
                  chan);
         }
 
-        public virtual void SendChanMessage(string chan, object message)
-        {
-            var clientIdList = _redis.HKeys(_prefix.Chan(chan));
-
-            SendMessage(
-                null,
-                clientIdList.Where(o => !string.IsNullOrWhiteSpace(o)),
-                message
-                );
-        }
         #endregion
 
 
