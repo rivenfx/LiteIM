@@ -37,9 +37,7 @@ If you have any questions, you can go to  [Issues](https://github.com/rivenfx/Li
 
 > This project directly or indirectly refers to the following items
 
-- [codearts](https://github.com/tinylit/codearts)
-- [InfluxData.Net](https://github.com/tihomir-kit/InfluxData.Net)
-- [influxdb-client-csharp](https://github.com/influxdata/influxdb-client-csharp)
+- [im](https://github.com/2881099/im)
 
 
 ## Stargazers over time
