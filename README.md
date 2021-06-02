@@ -2,7 +2,7 @@
 Simple IM chat room/online/offline function library, not including communication.
 
 ## LICENSES
-![GitHub](https://img.shields.io/github/license/rivenfx/Modular?color=brightgreen)
+![GitHub](https://img.shields.io/github/license/rivenfx/LiteIM?color=brightgreen)
 [![Badge](https://img.shields.io/badge/link-996.icu-%23FF4D5B.svg?style=flat-square)](https://996.icu/#/zh_CN)
 [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg?style=flat-square)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 
