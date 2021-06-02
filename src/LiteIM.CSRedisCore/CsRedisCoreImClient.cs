@@ -113,7 +113,45 @@ namespace LiteIM
 
         public virtual void ClearChanClient(string chan)
         {
-            throw new NotImplementedException();
+            var clients = this.GetChanClientList(chan).ToArray();
+
+            var offline = new List<string>();
+            var span = clients.AsSpan();
+            var start = span.Length;
+            while (start > 0)
+            {
+                start = start - 10;
+                var length = 10;
+                if (start < 0)
+                {
+                    length = start + 10;
+                    start = 0;
+                }
+                var slice = span.Slice(start, length);
+                var hvals = _redis.HMGet(
+                    _prefix.CSRedisCoreOnline(),
+                    slice.ToArray()
+                    .Select(b => b.ToString())
+                    .ToArray()
+                    );
+                for (var a = length - 1; a >= 0; a--)
+                {
+                    if (string.IsNullOrEmpty(hvals[a]))
+                    {
+                        offline.Add(span[start + a]);
+                        span[start + a] = null;
+                    }
+                }
+            }
+
+            //删除离线订阅
+            if (offline.Any())
+            {
+                _redis.HDel(
+                    _prefix.CSRedisCoreChan(chan),
+                    offline.ToArray()
+                    );
+            }
         }
 
 
