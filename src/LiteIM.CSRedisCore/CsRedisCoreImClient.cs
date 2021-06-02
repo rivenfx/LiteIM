@@ -19,8 +19,13 @@ namespace LiteIM
         public CsRedisCoreImClient(ICsRedisCoreImClientOptions options)
         {
             _options = options;
+            if (_options.Redis == null)
+            {
+                throw new ArgumentNullException(nameof(options.Redis), "ICsRedisCoreImClientOptions Redis 属性为空!");
+            }
 
-            _prefix = _options.Prefix;
+
+            _prefix = (_options.Prefix ?? string.Empty).Trim();
             _redis = _options.Redis;
         }
 
@@ -28,13 +33,13 @@ namespace LiteIM
         public virtual IEnumerable<string> GetClientListByOnline()
         {
             return _redis.HKeys(
-                _prefix.Online()
+                _prefix.CSRedisCoreOnline()
                 ).Where(o => !string.IsNullOrWhiteSpace(o));
         }
 
         public virtual bool HasOnline(string clientId)
         {
-            return _redis.HGet<int>(_prefix.Online(), clientId) > 0;
+            return _redis.HGet<int>(_prefix.CSRedisCoreOnline(), clientId) > 0;
         }
 
 
@@ -46,15 +51,15 @@ namespace LiteIM
             using (var pipe = _redis.StartPipe())
             {
                 pipe.HSet(
-                    _prefix.Chan(chan),
+                    _prefix.CSRedisCoreChan(chan),
                     clientId,
                     0);
                 pipe.HSet(
-                    _prefix.Client(clientId),
+                    _prefix.CSRedisCoreClient(clientId),
                     chan,
                     0);
                 pipe.HIncrBy(
-                    _prefix.ListChan(),
+                    _prefix.CSRedisCoreListChan(),
                     chan,
                     1);
                 pipe.EndPipe();
@@ -72,16 +77,16 @@ namespace LiteIM
                 foreach (var chan in chans)
                 {
                     pipe.HDel(
-                        _prefix.Chan(chan),
+                        _prefix.CSRedisCoreChan(chan),
                         clientId
                         );
                     pipe.HDel(
-                        _prefix.Client(clientId),
+                        _prefix.CSRedisCoreClient(clientId),
                         chan
                         );
                     pipe.Eval(
                         string.Format(CsRedisCoreImConsts.LeaveChan, chan),
-                        _prefix.ListChan()
+                        _prefix.CSRedisCoreListChan()
                         );
                 }
                 pipe.EndPipe();
@@ -100,7 +105,7 @@ namespace LiteIM
         public virtual IEnumerable<string> GetChanClientList(string chan)
         {
             return _redis.HKeys(
-                _prefix.Chan(chan)
+                _prefix.CSRedisCoreChan(chan)
                 )
                 .AsEnumerable();
         }
@@ -115,7 +120,7 @@ namespace LiteIM
         public virtual IEnumerable<(string chan, long online)> GetChanList()
         {
             var ret = _redis.HGetAll<long>(
-                    _prefix.ListChan()
+                    _prefix.CSRedisCoreListChan()
                 );
             return ret.Select(a => (a.Key, a.Value));
         }
@@ -123,14 +128,14 @@ namespace LiteIM
         public virtual IEnumerable<string> GetChanListByClientId(string clientId)
         {
             return _redis.HKeys(
-                _prefix.Client(clientId)
+                _prefix.CSRedisCoreClient(clientId)
                 ).AsEnumerable();
         }
 
         public virtual long GetChanOnline(string chan)
         {
             return _redis.HGet<long>(
-                _prefix.ListChan(),
+                _prefix.CSRedisCoreListChan(),
                  chan);
         }
 
