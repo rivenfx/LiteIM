@@ -4,8 +4,14 @@ using System.Text;
 
 namespace LiteIM
 {
+    /// <summary>
+    /// 空实现
+    /// </summary>
     public class NullImClient : IImClient
     {
+        /// <summary>
+        /// 实例
+        /// </summary>
         public static NullImClient Instance { get; private set; } = new NullImClient();
 
         public void ClearChanClient(string chan)
