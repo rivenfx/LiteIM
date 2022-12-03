@@ -18,7 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CSRedisCore" Version="3.6.5" />
+    <PackageReference Include="CSRedisCore" Version="3.8.3" />
   </ItemGroup>
 
   <ItemGroup>
