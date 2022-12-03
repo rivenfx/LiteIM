@@ -155,12 +155,12 @@ namespace LiteIM
         }
 
 
-        public virtual IEnumerable<(string chan, long online)> GetChanList()
+        public virtual IEnumerable<ChanOnlineInfo> GetChanList()
         {
             var ret = _redis.HGetAll<long>(
                     _prefix.CSRedisCoreListChan()
                 );
-            return ret.Select(a => (a.Key, a.Value));
+            return ret.Select(a => new ChanOnlineInfo(a.Key, a.Value));
         }
 
         public virtual IEnumerable<string> GetChanListByClientId(string clientId)
@@ -176,7 +176,6 @@ namespace LiteIM
                 _prefix.CSRedisCoreListChan(),
                  chan);
         }
-
         #endregion
 
 

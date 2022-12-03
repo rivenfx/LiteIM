@@ -61,7 +61,7 @@ namespace LiteIM
         /// 获取所有频道和在线人数
         /// </summary>
         /// <returns>频道名和在线人数</returns>
-        IEnumerable<(string chan, long online)> GetChanList();
+        IEnumerable<ChanOnlineInfo> GetChanList();
 
         /// <summary>
         /// 获取用户参与的所有频道
