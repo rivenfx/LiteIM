@@ -24,7 +24,7 @@ namespace LiteIM
             yield break;
         }
 
-        public IEnumerable<(string chan, long online)> GetChanList()
+        public IEnumerable<ChanOnlineInfo> GetChanList()
         {
             yield break;
         }
