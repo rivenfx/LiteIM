@@ -8,5 +8,10 @@ namespace LiteIM
         /// Redis 连接实例
         /// </summary>
         IConnectionMultiplexer Redis { get; set; }
+
+        /// <summary>
+        /// 数据库
+        /// </summary>
+        IDatabase Database { get; }
     }
 }

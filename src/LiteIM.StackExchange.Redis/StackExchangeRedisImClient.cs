@@ -19,13 +19,13 @@ namespace LiteIM
         public StackExchangeRedisImClient(IStackExchangeRedisImClientOptions options)
         {
             _options = options;
-            if (_options.Redis == null)
+            if (_options.Database == null)
             {
-                throw new ArgumentNullException(nameof(options.Redis), "IStackExchangeRedisImClientOptions Redis 属性为空!");
+                throw new ArgumentNullException(nameof(options.Redis), "IStackExchangeRedisImClientOptions Database 属性为空!");
             }
 
             _prefix = (_options.Prefix ?? string.Empty).Trim();
-            _redis = _options.Redis.GetDatabase();
+            _redis = _options.Database;
         }
 
         public virtual IEnumerable<string> GetClientListByOnline()
