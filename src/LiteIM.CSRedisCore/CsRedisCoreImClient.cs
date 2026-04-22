@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using LiteIM.Extensions;
 
 namespace LiteIM
@@ -37,9 +38,22 @@ namespace LiteIM
                 ).Where(o => !string.IsNullOrWhiteSpace(o));
         }
 
+        public virtual async Task<IEnumerable<string>> GetClientListByOnlineAsync()
+        {
+            var keys = await _redis.HKeysAsync(
+                _prefix.CSRedisCoreOnline()
+                );
+            return keys.Where(o => !string.IsNullOrWhiteSpace(o));
+        }
+
         public virtual bool HasOnline(string clientId)
         {
             return _redis.HGet<int>(_prefix.CSRedisCoreOnline(), clientId) > 0;
+        }
+
+        public virtual async Task<bool> HasOnlineAsync(string clientId)
+        {
+            return await _redis.HGetAsync<int>(_prefix.CSRedisCoreOnline(), clientId) > 0;
         }
 
 
@@ -64,6 +78,23 @@ namespace LiteIM
                     1);
                 pipe.EndPipe();
             }
+        }
+
+        public virtual Task JoinChanAsync(string clientId, string chan)
+        {
+            return Task.WhenAll(
+                _redis.HSetAsync(
+                    _prefix.CSRedisCoreChan(chan),
+                    clientId,
+                    0),
+                _redis.HSetAsync(
+                    _prefix.CSRedisCoreClient(clientId),
+                    chan,
+                    0),
+                _redis.HIncrByAsync(
+                    _prefix.CSRedisCoreListChan(),
+                    chan,
+                    1));
         }
 
         public virtual void LeaveChan(string clientId, params string[] chans)
@@ -93,6 +124,33 @@ namespace LiteIM
             }
         }
 
+        public virtual Task LeaveChanAsync(string clientId, params string[] chans)
+        {
+            if (chans?.Any() != true)
+            {
+                return Task.CompletedTask;
+            }
+
+            var tasks = new List<Task>(chans.Length * 3);
+            foreach (var chan in chans)
+            {
+                tasks.Add(_redis.HDelAsync(
+                    _prefix.CSRedisCoreChan(chan),
+                    clientId
+                    ));
+                tasks.Add(_redis.HDelAsync(
+                    _prefix.CSRedisCoreClient(clientId),
+                    chan
+                    ));
+                tasks.Add(_redis.EvalAsync(
+                    string.Format(CsRedisCoreImConsts.LeaveChan, chan),
+                    _prefix.CSRedisCoreListChan()
+                    ));
+            }
+
+            return Task.WhenAll(tasks);
+        }
+
 
         public virtual void LeaveChan(string clientId)
         {
@@ -102,11 +160,25 @@ namespace LiteIM
             this.LeaveChan(clientId, chans.ToArray());
         }
 
+        public virtual async Task LeaveChanAsync(string clientId)
+        {
+            var chans = await this.GetChanListByClientIdAsync(clientId);
+            await this.LeaveChanAsync(clientId, chans.ToArray());
+        }
+
         public virtual IEnumerable<string> GetChanClientList(string chan)
         {
             return _redis.HKeys(
                 _prefix.CSRedisCoreChan(chan)
                 )
+                .AsEnumerable();
+        }
+
+        public virtual async Task<IEnumerable<string>> GetChanClientListAsync(string chan)
+        {
+            return (await _redis.HKeysAsync(
+                _prefix.CSRedisCoreChan(chan)
+                ))
                 .AsEnumerable();
         }
 
@@ -154,10 +226,63 @@ namespace LiteIM
             }
         }
 
+        public virtual async Task ClearChanClientAsync(string chan)
+        {
+            var clients = (await this.GetChanClientListAsync(chan)).ToArray();
+            if (!clients.Any())
+            {
+                return;
+            }
+
+            var offline = new List<string>();
+            var start = clients.Length;
+            while (start > 0)
+            {
+                start = start - 10;
+                var length = 10;
+                if (start < 0)
+                {
+                    length = start + 10;
+                    start = 0;
+                }
+                var slice = new string[length];
+                Array.Copy(clients, start, slice, 0, length);
+                var hvals = await _redis.HMGetAsync(
+                    _prefix.CSRedisCoreOnline(),
+                    slice
+                    .Select(b => b.ToString())
+                    .ToArray()
+                    );
+                for (var a = length - 1; a >= 0; a--)
+                {
+                    if (string.IsNullOrEmpty(hvals[a]))
+                    {
+                        offline.Add(clients[start + a]);
+                    }
+                }
+            }
+
+            if (offline.Any())
+            {
+                await _redis.HDelAsync(
+                    _prefix.CSRedisCoreChan(chan),
+                    offline.ToArray()
+                    );
+            }
+        }
+
 
         public virtual IEnumerable<ChanOnlineInfo> GetChanList()
         {
             var ret = _redis.HGetAll<long>(
+                    _prefix.CSRedisCoreListChan()
+                );
+            return ret.Select(a => new ChanOnlineInfo(a.Key, a.Value));
+        }
+
+        public virtual async Task<IEnumerable<ChanOnlineInfo>> GetChanListAsync()
+        {
+            var ret = await _redis.HGetAllAsync<long>(
                     _prefix.CSRedisCoreListChan()
                 );
             return ret.Select(a => new ChanOnlineInfo(a.Key, a.Value));
@@ -170,9 +295,23 @@ namespace LiteIM
                 ).AsEnumerable();
         }
 
+        public virtual async Task<IEnumerable<string>> GetChanListByClientIdAsync(string clientId)
+        {
+            return (await _redis.HKeysAsync(
+                _prefix.CSRedisCoreClient(clientId)
+                )).AsEnumerable();
+        }
+
         public virtual long GetChanOnline(string chan)
         {
             return _redis.HGet<long>(
+                _prefix.CSRedisCoreListChan(),
+                 chan);
+        }
+
+        public virtual Task<long> GetChanOnlineAsync(string chan)
+        {
+            return _redis.HGetAsync<long>(
                 _prefix.CSRedisCoreListChan(),
                  chan);
         }

@@ -35,7 +35,7 @@ namespace SampleWebApp.MessageHub
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             // 离开所有聊天室
-            _imClient.LeaveChan(this.Context.ConnectionId);
+            await _imClient.LeaveChanAsync(this.Context.ConnectionId);
 
             await base.OnDisconnectedAsync(exception);
         }
@@ -51,13 +51,13 @@ namespace SampleWebApp.MessageHub
 
             foreach (var chan in chans)
             {
-                _imClient.JoinChan(this.Context.ConnectionId, chan);
+                await _imClient.JoinChanAsync(this.Context.ConnectionId, chan);
             }
         }
 
         public async Task SendData(string chan)
         {
-            var clientList = _imClient.GetChanClientList(chan)
+            var clientList = (await _imClient.GetChanClientListAsync(chan))
                 .Where(o => o != this.Context.ConnectionId);
 
             await Clients.Clients(clientList.ToList())

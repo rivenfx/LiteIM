@@ -10,5 +10,6 @@ $srcPath = Join-Path $slnPath "src"
 # 所有的项目名称
 $projects = (
     "LiteIM.Core",
-    "LiteIM.CSRedisCore"
+    "LiteIM.CSRedisCore",
+    "LiteIM.StackExchange.Redis"
 )

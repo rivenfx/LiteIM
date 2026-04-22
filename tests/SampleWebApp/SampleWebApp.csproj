@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\LiteIM.CSRedisCore\LiteIM.CSRedisCore.csproj" />
+    <ProjectReference Include="..\..\src\LiteIM.StackExchange.Redis\LiteIM.StackExchange.Redis.csproj" />
   </ItemGroup>
 
 </Project>

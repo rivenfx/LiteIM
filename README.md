@@ -18,6 +18,7 @@ Please note: once the use of the open source projects as well as the reference f
 |:------|:-----:|:-----:|
 |Riven.LiteIM.Core|[![NuGet version](https://img.shields.io/nuget/v/Riven.LiteIM.Core?color=brightgreen)](https://www.nuget.org/packages/Riven.LiteIM.Core/)|[![Nuget](https://img.shields.io/nuget/dt/Riven.LiteIM.Core?color=brightgreen)](https://www.nuget.org/packages/Riven.LiteIM.Core/)|
 |Riven.LiteIM.CSRedisCore|[![NuGet version](https://img.shields.io/nuget/v/Riven.LiteIM.CSRedisCore?color=brightgreen)](https://www.nuget.org/packages/Riven.LiteIM.CSRedisCore/)|[![Nuget](https://img.shields.io/nuget/dt/Riven.LiteIM.CSRedisCore?color=brightgreen)](https://www.nuget.org/packages/Riven.LiteIM.CSRedisCore/)|
+|Riven.LiteIM.StackExchange.Redis|[![NuGet version](https://img.shields.io/nuget/v/Riven.LiteIM.StackExchange.Redis?color=brightgreen)](https://www.nuget.org/packages/Riven.LiteIM.StackExchange.Redis/)|[![Nuget](https://img.shields.io/nuget/dt/Riven.LiteIM.StackExchange.Redis?color=brightgreen)](https://www.nuget.org/packages/Riven.LiteIM.StackExchange.Redis/)|
 
 
 ## Quick start

@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using StackExchange.Redis;
 
 using SampleWebApp.MessageHub;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using LiteIM;
 
@@ -30,13 +32,19 @@ namespace SampleWebApp
 
             services.AddSignalR();
 
+            // 示例值：同步兼容路径较多时，适当提高线程池最小线程数，避免突发请求下扩容滞后。
+            ThreadPool.SetMinThreads(
+                Configuration.GetValue<int?>("LiteIM:ThreadPool:MinWorkerThreads") ?? 200,
+                Configuration.GetValue<int?>("LiteIM:ThreadPool:MinCompletionPortThreads") ?? 200);
 
-            // 添加 im rediscore 的服务
-            var options = new CsRedisCoreImClientOptions()
+            // 添加 im StackExchange.Redis 的服务
+            var options = new StackExchangeRedisImClientOptions()
             {
-                Redis = new CSRedis.CSRedisClient("")
+                Redis = ConnectionMultiplexer.Connect(
+                    Configuration["LiteIM:Redis:ConnectionString"]
+                    ?? "127.0.0.1:6379,abortConnect=false,connectTimeout=5000,syncTimeout=5000,asyncTimeout=5000,connectRetry=3,keepAlive=60")
             };
-            services.AddLiteIMCsRedisCore((s) =>
+            services.AddLiteIMStackExchangeRedis((s) =>
             {
                 return options;
             });
