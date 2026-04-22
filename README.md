@@ -10,7 +10,13 @@ Please note: once the use of the open source projects as well as the reference f
 
 ## Build Status
 
-[![Build Status](https://dev.azure.com/rivenfx/RivenFx/_apis/build/status/rivenfx.LiteIM?branchName=master)](https://dev.azure.com/rivenfx/RivenFx/_build/latest?definitionId=9&branchName=master)
+[![Build Status](https://github.com/rivenfx/LiteIM/actions/workflows/release.yml/badge.svg)](https://github.com/rivenfx/LiteIM/actions/workflows/release.yml)
+
+## GitHub Actions Release
+
+Push a tag matching `v*` to run the release workflow in `.github/workflows/release.yml`.
+The workflow reuses `nupkg/pack.ps1` and `nupkg/push_packages.ps1`, publishes packages to NuGet, and creates a GitHub Release with the generated `.nupkg` files.
+Before using it, add the repository secret `NUGET_KEY` with your NuGet API key.
 
 ## Nuget Packages
 
