@@ -1,9 +1,9 @@
 name: Publish Packages
 
 on:
-  push:
-    tags:
-      - "*"
+  release:
+    types:
+      - published
 
 permissions:
   contents: write

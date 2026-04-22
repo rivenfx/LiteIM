@@ -14,8 +14,8 @@ Please note: once the use of the open source projects as well as the reference f
 
 ## GitHub Actions Release
 
-Push a tag matching `v*` to run the release workflow in `.github/workflows/release.yml`.
-The workflow reuses `nupkg/pack.ps1` and `nupkg/push_packages.ps1`, publishes packages to NuGet, and creates a GitHub Release with the generated `.nupkg` files.
+Publish a GitHub Release to run the release workflow in `.github/workflows/release.yml`.
+The workflow reuses `nupkg/pack.ps1` and `nupkg/push_packages.ps1` and publishes packages to NuGet.
 Before using it, add the repository secret `NUGET_KEY` with your NuGet API key.
 
 ## Nuget Packages
