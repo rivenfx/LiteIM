@@ -1,0 +1,33 @@
+name: "pack and publish"
+
+on:
+  push:
+    tags:
+      - '*'
+
+env:
+  IS_PRODUCTION: true
+  TAG: ${{ github.ref_name }} # 获取当前分支名或tag名
+  NUGET_SOURCE: https://api.nuget.org/v3/index.json
+  NUGET_SOURCE_APIKEY: ${{ secrets.NUGET_KEY }}
+
+jobs:
+
+  build:
+    runs-on: windows-latest
+    steps:
+      # 拉取代码
+      - uses: actions/checkout@v4
+      # 配置dotnet环境
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.x
+      # 打包为nupkg
+      - name: Pack and push with pwsh
+        shell: pwsh
+        working-directory: ./nupkg
+        run: |
+          ./pack.ps1
+          ./pack_push.ps1
+
